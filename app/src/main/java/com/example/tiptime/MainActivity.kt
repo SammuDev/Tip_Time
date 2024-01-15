@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -72,6 +73,7 @@ fun TipTimeLayout() {
                 .padding(bottom = 16.dp, top = 40.dp)
                 .align(alignment = Alignment.Start)
         )
+        EditNumberField(modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth())
         Text(
             text = stringResource(R.string.tip_amount, "$0.00"),
             style = MaterialTheme.typography.displaySmall
@@ -80,23 +82,20 @@ fun TipTimeLayout() {
     }
 }
 
-/**
- * Calculates the tip based on the user input and format the tip amount
- * according to the local currency.
- * Example would be "$10.00".
- */
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
-    val tip = tipPercent / 100 * amount
-    return NumberFormat.getCurrencyInstance().format(tip)
-}
-
 @Composable
 fun EditNumberField(modifier: Modifier = Modifier) {
+    val amountInput = "0"
+
     TextField(
-        value = "",
+        value = amountInput,
         onValueChange = {},
         modifier = modifier
     )
+}
+
+private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
+    val tip = tipPercent / 100 * amount
+    return NumberFormat.getCurrencyInstance().format(tip)
 }
 
 @Preview(showBackground = true)
