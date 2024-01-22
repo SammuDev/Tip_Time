@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -91,6 +92,11 @@ fun TipTimeLayout() {
             label = R.string.bill_amount,
             value = amountInput,
             onValueChange = { amountInput = it },
+            keyBoardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+//            imeAction = ImeAction.Next,
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
@@ -99,6 +105,11 @@ fun TipTimeLayout() {
             label = R.string.how_was_the_service,
             value = tipInput,
             onValueChange = { tipInput = it },
+            keyBoardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+//            imeAction = ImeAction.Done,
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
@@ -116,6 +127,8 @@ fun EditNumberField(
     @StringRes label: Int,
     value: String,
     onValueChange: (String) -> Unit,
+    keyBoardOptions: KeyboardOptions,
+//    imeAction: ImeAction,
     modifier: Modifier = Modifier
 ) {
     TextField(
@@ -123,7 +136,11 @@ fun EditNumberField(
         onValueChange = onValueChange,
         label = { Text(text = stringResource(label)) },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+//        keyboardOptions = KeyboardOptions.Default.copy(
+//            keyboardType = KeyboardType.Number,
+//            imeAction = imeAction
+//        ),
+        keyboardOptions = keyBoardOptions,
         modifier = modifier
     )
 }
