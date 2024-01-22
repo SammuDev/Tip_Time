@@ -62,7 +62,7 @@ fun TipTimeLayout() {
 
     val amount = amountInput.toDoubleOrNull() ?: 0.0
     val tipPercent = tipInput.toDoubleOrNull() ?: 15.0
-    val tip = calculateTip(amount, tipPercent)
+    val tip = calculateTip(amount, tipPercent, roundUp)
 
     Column(
         modifier = Modifier
@@ -102,7 +102,11 @@ fun TipTimeLayout() {
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
         )
-        RoundTheTipRow(roundUp)
+        RoundTheTipRow(
+            roundUp = roundUp,
+            onRoundUpChanged = { roundUp = it },
+            modifier = Modifier.padding(bottom = 32.dp)
+        )
         Text(
             text = stringResource(R.string.tip_amount, tip),
             style = MaterialTheme.typography.displaySmall
@@ -131,9 +135,9 @@ fun EditNumberField(
 
 @Composable
 fun RoundTheTipRow(
-    modifier: Modifier = Modifier,
     roundUp: Boolean,
-    onRoundUpChanged: (Boolean) -> Unit
+    onRoundUpChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -145,15 +149,16 @@ fun RoundTheTipRow(
         Switch(
             checked = roundUp,
             onCheckedChange = onRoundUpChanged,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth(Alignment.End)
         )
     }
 }
 
-private fun calculateTip(amount: Double, tipPercent: Double): String {
-    val tip = tipPercent / 100 * amount
+private fun calculateTip(amount: Double, tipPercent: Double, roundUp: Boolean): String {
+    var tip = tipPercent / 100 * amount
+    if (roundUp) tip = kotlin.math.ceil(tip)
     return NumberFormat.getCurrencyInstance().format(tip)
 }
 
